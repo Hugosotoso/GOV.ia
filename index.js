@@ -16,10 +16,9 @@ app.post('/api/chat', async (req, res) => {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const prompt = `Aja como GOV.ia. Usuário: ${nome}, Cargo: ${cargo}, Unidade: ${uorg}. Pergunta: ${mensagem}`;
         
-        const result = await model.generateContent(prompt);
-        res.json({ resposta: result.response.text() });
-    } catch (error) {
-        res.status(500).json({ erro: "Falha na IA" });
+       } catch (error) {
+        console.error("ERRO DO GEMINI:", error);
+        res.status(500).json({ erro: "Erro real da IA: " + error.message });
     }
 });
 
