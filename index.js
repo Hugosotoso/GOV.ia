@@ -29,17 +29,12 @@ app.post('/api/chat', async (req, res) => {
         const texto = response.text();
 
         res.json({ resposta: texto });
-    } } catch (error: any) {
-      // 🚨 MODO DETETIVE MEGA BRAIN: Vai saltar um alerta no teu ecrã!
-      alert("O CULPADO É: " + error.message); 
-      
-      console.log("Erro de conexão na IA:", error.message);
-      
-      const respostaSalvadora = `Entendido, ${nome || 'Servidor'}. Neste exato momento, as bases de dados centrais estão em processo de sincronização criptografada. Deixei este pedido registrado com prioridade máxima na fila de processamento. Posso ajudar em algo mais?`;
-      setMensagens((prev) => [...prev, { id: Date.now().toString(), texto: respostaSalvadora, isUser: false }]);
-    } finally {
-      setCarregando(false);
+    } catch (error) {
+        console.error("ERRO DA IA:", error);
+        // O SERVIDOR devolve o erro assim:
+        res.status(500).json({ erro: "Erro na IA: " + error.message });
     }
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
